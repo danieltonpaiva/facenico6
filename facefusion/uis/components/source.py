@@ -1,10 +1,10 @@
-from typing import Any, IO, Optional
+from typing import Any, IO, Optional,List
 import gradio
 import os
-
 import facefusion.globals
 from facefusion import wording
-from facefusion.utilities import is_image
+from facefusion.uis.typing import File
+from facefusion.filesystem import are_images
 from facefusion.uis.core import register_ui_component
 
 SOURCE_FILE : Optional[gradio.File] = None
@@ -15,7 +15,7 @@ def render() -> None:
 	global SOURCE_FILE
 	global SOURCE_IMAGE
 
-	is_source_image = is_image(facefusion.globals.source_path)
+	are_source_images = are_images(facefusion.globals.source_paths)
 	SOURCE_FILE = gradio.File(
 		file_count = 'single',
 		file_types =
@@ -33,10 +33,10 @@ def render() -> None:
 		show_label = False
 	)
 	register_ui_component('source_image', SOURCE_IMAGE)
-	arquivos = [f for f in os.listdir('/kaggle/working/facenico3/exemplos') if os.path.isfile(os.path.join('/kaggle/working/facenico3/exemplos', f))]
+	arquivos = [f for f in os.listdir('/kaggle/working/facenico6/exemplos') if os.path.isfile(os.path.join('/kaggle/working/facenico6/exemplos', f))]
 	files = []
 	for x in arquivos:
-		files.append('/kaggle/working/facenico3/exemplos/' + x)
+		files.append('/kaggle/working/facenico6/exemplos/' + x)
 
 	examples = gradio.Examples(sorted(files), SOURCE_FILE, examples_per_page=20)
 
