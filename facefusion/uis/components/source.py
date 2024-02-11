@@ -42,7 +42,7 @@ def listen() -> None:
 def update(files : List[File]) -> gradio.Image:
 	file_names = [ file.name for file in files ] if files else None
 	if are_images(file_names):
-		facefusion.globals.source_paths = file_names
-		return gradio.Image(value = file_names[0], visible = True)
+		facefusion.globals.source_paths = [SOURCE_FILE.value]
+		return SOURCE_FILE
 	facefusion.globals.source_paths = None
 	return gradio.Image(value = None, visible = False)
