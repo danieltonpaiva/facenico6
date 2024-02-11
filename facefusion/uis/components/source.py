@@ -1,4 +1,4 @@
-from typing import Any, IO, Optional,List
+from typing import Optional, List
 import gradio
 import os
 import facefusion.globals
@@ -7,7 +7,7 @@ from facefusion.uis.typing import File
 from facefusion.filesystem import are_images
 from facefusion.uis.core import register_ui_component
 
-SOURCE_FILE : Optional[gradio.File] = None
+SOURCE_FILE : Optional[gradio.Image] = None
 SOURCE_IMAGE : Optional[gradio.Image] = None
 
 
@@ -16,19 +16,13 @@ def render() -> None:
 	global SOURCE_IMAGE
 
 	are_source_images = are_images(facefusion.globals.source_paths)
-	SOURCE_FILE = gradio.File(
-		file_count = 'single',
-		file_types =
-		[
-			'.png',
-			'.jpg',
-			'.webp'
-		],
+	SOURCE_FILE = gradio.Image(
 		label = wording.get('source_file_label'),
-		value = facefusion.globals.source_path if are_source_images else None
+		value = facefusion.globals.source_paths if are_source_images else None
 	)
+	source_file_names = [ source_file_value['name'] for source_file_value in SOURCE_FILE.value ] if SOURCE_FILE.value else None
 	SOURCE_IMAGE = gradio.Image(
-		value = SOURCE_FILE.value['name'] if are_source_images else None,
+		value = source_file_names[0] if are_source_images else None,
 		visible = are_source_images,
 		show_label = False
 	)
@@ -45,9 +39,10 @@ def listen() -> None:
 	SOURCE_FILE.change(update, inputs = SOURCE_FILE, outputs = SOURCE_IMAGE)
 
 
-def update(file: IO[Any]) -> gradio.Image:
-	if file and are_images(file.name):
-		facefusion.globals.source_path = file.name
-		return gradio.Image(value = file.name, visible = True)
-	facefusion.globals.source_path = None
+def update(files : List[File]) -> gradio.Image:
+	file_names = [ file.name for file in files ] if files else None
+	if are_images(file_names):
+		facefusion.globals.source_paths = file_names
+		return gradio.Image(value = file_names[0], visible = True)
+	facefusion.globals.source_paths = None
 	return gradio.Image(value = None, visible = False)
