@@ -25,11 +25,11 @@ def render() -> None:
 			'.webp'
 		],
 		label = wording.get('source_file_label'),
-		value = facefusion.globals.source_path if is_source_image else None
+		value = facefusion.globals.source_path if are_source_images else None
 	)
 	SOURCE_IMAGE = gradio.Image(
-		value = SOURCE_FILE.value['name'] if is_source_image else None,
-		visible = is_source_image,
+		value = SOURCE_FILE.value['name'] if are_source_images else None,
+		visible = are_source_images,
 		show_label = False
 	)
 	register_ui_component('source_image', SOURCE_IMAGE)
@@ -46,7 +46,7 @@ def listen() -> None:
 
 
 def update(file: IO[Any]) -> gradio.Image:
-	if file and is_image(file.name):
+	if file and are_images(file.name):
 		facefusion.globals.source_path = file.name
 		return gradio.Image(value = file.name, visible = True)
 	facefusion.globals.source_path = None
