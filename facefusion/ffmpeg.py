@@ -162,4 +162,5 @@ def renomear_frames(pasta_frames):
 		caminho_novo = os.path.join(pasta_frames, novo_nome)
 		os.rename(caminho_original, caminho_novo)  # Renomeia o arquivo
 	
+	print(os.listdir(pasta_frames))
 	print("Frames renomeados com sucesso.")
