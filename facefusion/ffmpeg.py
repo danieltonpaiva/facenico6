@@ -65,7 +65,7 @@ def extract_frames(target_path : str, fps : float) -> bool:
 	temp_frame_compression = round(31 - (facefusion.globals.temp_frame_quality * 0.31))
 	trim_frame_start = facefusion.globals.trim_frame_start
 	trim_frame_end = facefusion.globals.trim_frame_end
-	temp_frames_pattern = get_temp_frames_pattern(target_path, '%04d')
+	temp_frames_pattern = get_temp_frames_pattern(target_path, '%4d')
 	commands = [ '-hwaccel', 'auto', '-i', target_path, '-q:v', str(temp_frame_compression), '-pix_fmt', 'rgb24' ]
 	if trim_frame_start is not None and trim_frame_end is not None:
 		commands.extend([ '-vf', 'trim=start_frame=' + str(trim_frame_start) + ':end_frame=' + str(trim_frame_end) + ',fps=' + str(fps) ])
@@ -89,7 +89,7 @@ def merge_video(target_path : str, fps : float) -> bool:
 	renomear_frames(get_temp_directory_path(target_path))
 	print(len(os.listdir(get_temp_directory_path(target_path))))
 	temp_output_video_path = get_temp_output_video_path(target_path)
-	temp_frames_pattern = get_temp_frames_pattern(target_path, '%04d')
+	temp_frames_pattern = get_temp_frames_pattern(target_path, '%4d')
 	commands = [ '-hwaccel', 'auto', '-ignore_loop', '0', '-r', str(fps), '-i', temp_frames_pattern, '-c:v', facefusion.globals.output_video_encoder ]
 	if facefusion.globals.output_video_encoder in [ 'libx264', 'libx265' ]:
 		output_video_compression = round(51 - (facefusion.globals.output_video_quality * 0.51))
@@ -115,7 +115,7 @@ def get_crf_value(quality):
 
 def merge_video2(target_path: str, fps: float) -> bool:
     temp_output_video_path = get_temp_output_video_path(target_path)
-    temp_frames_pattern = get_temp_frames_pattern(target_path, '%04d')
+    temp_frames_pattern = get_temp_frames_pattern(target_path, '%4d')
 
     ffmpeg.input(temp_frames_pattern, r=fps, hwaccel='cuda').output(
         temp_output_video_path,
@@ -157,7 +157,7 @@ def renomear_frames(pasta_frames):
 	
 	# Renomeia os arquivos na ordem numérica sequencial
 	for idx, arquivo in enumerate(arquivos_imagem, start=1):
-		novo_nome = f'{idx:04d}.jpg'  # Define o novo nome do arquivo
+		novo_nome = f'{idx:4d}.jpg'  # Define o novo nome do arquivo
 		caminho_original = os.path.join(pasta_frames, arquivo)
 		caminho_novo = os.path.join(pasta_frames, novo_nome)
 		os.rename(caminho_original, caminho_novo)  # Renomeia o arquivo
