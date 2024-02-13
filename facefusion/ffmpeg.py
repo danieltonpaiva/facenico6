@@ -10,8 +10,8 @@ from tqdm import tqdm
 import os
 
 
-def run_ffmpeg(input_command : List[str], desc="Processando video", target_path=""):
-    frames = count_video_frame_total(target_path)
+def run_ffmpeg(input_command : List[str], desc="Processando video", tamanho=0):
+    frames = tamanho
     commands = [ 'ffmpeg']
     commands.extend(input_command)
     # Cria um objeto tqdm para exibir a barra de progresso
@@ -102,7 +102,7 @@ def merge_video(target_path : str, fps : float) -> bool:
 		output_video_compression = round(51 - (facefusion.globals.output_video_quality * 0.51))
 		commands.extend([ '-cq', str(output_video_compression) ])
 	commands.extend([ '-pix_fmt', 'yuv420p', '-colorspace', 'bt709', '-y', temp_output_video_path ])
-	return run_ffmpeg(commands, "Criando o vídeo", target_path)
+	return run_ffmpeg(commands, "Criando o vídeo", len(os.listdir(get_temp_directory_path(target_path))))
 
 def get_crf_value(quality):
     if facefusion.globals.output_video_encoder in ['libx264', 'libx265']:
@@ -154,7 +154,6 @@ def renomear_frames(pasta_frames):
 	
 	# Ordena os arquivos por nome
 	arquivos_imagem.sort()
-	print(arquivos_imagem)
 	
 	# Renomeia os arquivos na ordem numérica sequencial
 	for idx, arquivo in enumerate(arquivos_imagem, start=1):
@@ -163,5 +162,4 @@ def renomear_frames(pasta_frames):
 		caminho_novo = os.path.join(pasta_frames, novo_nome)
 		os.rename(caminho_original, caminho_novo)  # Renomeia o arquivo
 	
-	print(os.listdir(pasta_frames))
 	print("Frames renomeados com sucesso.")
