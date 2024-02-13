@@ -269,7 +269,6 @@ def process_frame(source_face : Face, reference_faces : FaceSet, temp_frame : Fr
 				temp_frame = swap_face(source_face, similar_face, temp_frame)
 		else:
 			if(temp_frame_path != ""):
-				print('Removendo frame: ' + temp_frame_path)
 				os.remove(temp_frame_path)
 				return False
 	if 'one' in facefusion.globals.face_selector_mode:
