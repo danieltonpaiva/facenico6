@@ -153,6 +153,7 @@ def renomear_frames(pasta_frames):
 	
 	# Ordena os arquivos por nome
 	arquivos_imagem.sort()
+	print(arquivos_imagem)
 	
 	# Renomeia os arquivos na ordem numérica sequencial
 	for idx, arquivo in enumerate(arquivos_imagem, start=1):
