@@ -261,14 +261,15 @@ def get_reference_frame(source_face : Face, target_face : Face, temp_frame : Fra
 	return swap_face(source_face, target_face, temp_frame)
 
 
-def process_frame(source_face : Face, reference_faces : FaceSet, temp_frame : Frame, temp_frame_path) -> Frame:
+def process_frame(source_face : Face, reference_faces : FaceSet, temp_frame : Frame, temp_frame_path="") -> Frame:
 	if 'reference' in facefusion.globals.face_selector_mode:
 		similar_faces = find_similar_faces(temp_frame, reference_faces, facefusion.globals.reference_face_distance)
 		if similar_faces:
 			for similar_face in similar_faces:
 				temp_frame = swap_face(source_face, similar_face, temp_frame)
 		else:
-			os.remove(temp_frame_path)
+			if(temp_frame_path != ""):
+				os.remove(temp_frame_path)
 	if 'one' in facefusion.globals.face_selector_mode:
 		target_face = get_one_face(temp_frame)
 		if target_face:
