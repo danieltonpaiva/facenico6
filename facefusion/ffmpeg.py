@@ -11,7 +11,6 @@ from tqdm import tqdm
 
 def run_ffmpeg(input_command : List[str], desc="Processando video", target_path=""):
     frames = count_video_frame_total(target_path)
-    print("Total de frames: " + frames)
     commands = [ 'ffmpeg']
     commands.extend(input_command)
     # Cria um objeto tqdm para exibir a barra de progresso
