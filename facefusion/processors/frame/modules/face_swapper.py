@@ -290,8 +290,7 @@ def process_frames(source_paths : List[str], temp_frame_paths : List[str], updat
 	for temp_frame_path in temp_frame_paths:
 		temp_frame = read_image(temp_frame_path)
 		result_frame = process_frame(source_face, reference_faces, temp_frame, temp_frame_path)
-		if os.path.exists(temp_frame_path):
-			write_image(temp_frame_path, result_frame)
+		write_image(temp_frame_path, result_frame)
 		update_progress()
 
 
