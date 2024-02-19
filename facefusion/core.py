@@ -44,6 +44,7 @@ def cli() -> None:
 	signal.signal(signal.SIGINT, lambda signal_number, frame: destroy())
 	program = ArgumentParser(formatter_class = lambda prog: HelpFormatter(prog, max_help_position = 120), add_help = False)
 	# general
+	program.add_argument('--collab', action='store_true', help='Define a variável isCollab como True')
 	program.add_argument('-s', '--source', action = 'append', help = wording.get('source_help'), dest = 'source_paths')
 	program.add_argument('-t', '--target', help = wording.get('target_help'), dest = 'target_path')
 	program.add_argument('-o', '--output', help = wording.get('output_help'), dest = 'output_path')
@@ -111,6 +112,7 @@ def cli() -> None:
 def apply_args(program : ArgumentParser) -> None:
 	args = program.parse_args()
 	# general
+	acefusion.globals.isCollab = args.collab
 	facefusion.globals.source_paths = args.source_paths
 	facefusion.globals.target_path = args.target_path
 	facefusion.globals.output_path = normalize_output_path(facefusion.globals.source_paths, facefusion.globals.target_path, args.output_path)

@@ -1,7 +1,7 @@
 import gradio
 
 from facefusion.uis.components import about, frame_processors, frame_processors_options, execution, execution_thread_count, execution_queue_count, limit_resources, temp_frame, output_options, common_options, source, target, output, preview, trim_frame, face_analyser, face_selector, face_masker
-
+import facefusion.globals
 
 def pre_check() -> bool:
 	return True
@@ -74,4 +74,4 @@ def listen() -> None:
 
 
 def run(ui : gradio.Blocks) -> None:
-	ui.launch(show_api = False, share=False)
+	ui.launch(show_api = False, share=facefusion.globals.isCollab)
